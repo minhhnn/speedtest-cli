@@ -31,7 +31,7 @@ def make_plot_file(last_24, file_plot_name):
   rcParams['xtick.labelsize'] = 'xx-small'
 
   plt.plot(last_24['timestamp'],last_24['download'], 'b-')
-  plt.title('2503 Green Street Bandwidth Report (last 24 hours)')
+  plt.title('Bandwidth Report (last 24 hours)')
   plt.ylabel('Bandwidth in MBps')
   plt.yticks(xrange(0,21))
   plt.ylim(0.0,20.0)
