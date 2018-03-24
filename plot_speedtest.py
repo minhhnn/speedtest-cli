@@ -5,17 +5,18 @@ from matplotlib import dates, rcParams
 import pandas as pd
 
 def main():
-  plot_file_name = 'bandwidth.png'
+  plot_file_name = '/tmp/speedtest_logs/bandwidth.png'
   create_plot(plot_file_name)
   os.system('open ' + plot_file_name)
 
 def create_plot(plot_file_name):
   df = read_data()
+  print df
   make_plot_file(df, plot_file_name)
 
 def read_data():
   df = pd.io.parsers.read_csv(
-    'speedtest.log',
+    '/tmp/speedtest_logs/speedtest.log',
     names='date time ping download upload'.split(),
     header=None,
     sep=r'\s+',
@@ -23,18 +24,16 @@ def read_data():
     na_values=['TEST','FAILED'],
   )
 
-  print df
+  return df[-8:]   # return data for last 48 periods (i.e., 24 hours)
 
-  return df[-48:]   # return data for last 48 periods (i.e., 24 hours)
-
-def make_plot_file(last_24, file_plot_name):
+def make_plot_file(data, file_plot_name):
   rcParams['xtick.labelsize'] = 'xx-small'
 
-  plt.plot(last_24['timestamp'],last_24['download'], 'b-')
+  plt.plot(data['timestamp'],data['download'], 'b-')
   plt.title('Bandwidth Report (last 24 hours)')
   plt.ylabel('Bandwidth in MBps')
-  plt.yticks(xrange(0,21))
-  plt.ylim(0.0,20.0)
+  #plt.yticks(xrange(0,21))
+  #plt.ylim(0.0,20.0)
 
   plt.xlabel('Date/Time')
   plt.xticks(rotation='45')
