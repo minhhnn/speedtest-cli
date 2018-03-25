@@ -3,6 +3,8 @@ import os
 import matplotlib.pyplot as plt
 from matplotlib import dates, rcParams
 import pandas as pd
+import numpy as np
+import matplotlib.ticker as ticker
 
 def main():
   plot_file_name = '/tmp/speedtest_logs/bandwidth.png'
@@ -24,25 +26,29 @@ def read_data():
     na_values=['TEST','FAILED'],
   )
 
-  return df[-8:]   # return data for last 48 periods (i.e., 24 hours)
+  return df[-48:]   # return data for last 48 periods (i.e., 24 hours)
 
 def make_plot_file(data, file_plot_name):
   rcParams['xtick.labelsize'] = 'xx-small'
 
-  plt.plot(data['timestamp'],data['download'], 'b-')
+  plt.plot(data['timestamp'],data['download'], label='download')
+  plt.plot(data['timestamp'],data['upload'], label='upload')
+  plt.plot(data['timestamp'],data['ping'], label='ping')
   plt.title('Bandwidth Report (last 24 hours)')
   plt.ylabel('Bandwidth in MBps')
-  #plt.yticks(xrange(0,21))
-  #plt.ylim(0.0,20.0)
-
+  plt.ylim(0.0,100.0)
   plt.xlabel('Date/Time')
   plt.xticks(rotation='45')
 
+  plt.legend()
   plt.grid()
+  plt.legend(loc=9, bbox_to_anchor=(0.5, -0.25), ncol=3)
 
   current_axes = plt.gca()
   current_figure = plt.gcf()
 
+  current_axes.yaxis.set_major_locator(ticker.MultipleLocator(10))
+  current_axes.yaxis.set_minor_locator(ticker.MultipleLocator(1))
   hfmt = dates.DateFormatter('%m/%d %H:%M')
   current_axes.xaxis.set_major_formatter(hfmt)
   current_figure.subplots_adjust(bottom=.25)
