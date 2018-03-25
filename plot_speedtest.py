@@ -31,11 +31,11 @@ def read_data():
 def make_plot_file(data, file_plot_name):
   rcParams['xtick.labelsize'] = 'xx-small'
 
-  plt.plot(data['timestamp'],data['download'], label='download')
-  plt.plot(data['timestamp'],data['upload'], label='upload')
-  plt.plot(data['timestamp'],data['ping'], label='ping')
+  plt.plot(data['timestamp'],data['download'], '-g', label='download')
+  plt.plot(data['timestamp'],data['upload'], '-b', label='upload')
+  plt.plot(data['timestamp'],data['ping'], '-r', label='ping')
   plt.title('Bandwidth Report (last 24 hours)')
-  plt.ylabel('Bandwidth in MBps')
+  plt.ylabel('Bandwidth (Mbps)')
   plt.ylim(0.0,100.0)
   plt.xlabel('Date/Time')
   plt.xticks(rotation='45')
@@ -49,7 +49,7 @@ def make_plot_file(data, file_plot_name):
 
   current_axes.yaxis.set_major_locator(ticker.MultipleLocator(10))
   current_axes.yaxis.set_minor_locator(ticker.MultipleLocator(1))
-  hfmt = dates.DateFormatter('%m/%d %H:%M')
+  hfmt = dates.DateFormatter('%d/%m %H:%M')
   current_axes.xaxis.set_major_formatter(hfmt)
   current_figure.subplots_adjust(bottom=.25)
 
